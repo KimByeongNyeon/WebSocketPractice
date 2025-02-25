@@ -14,7 +14,7 @@ export function initGame(): void {
     properties: initializeProperties(),
     currentPlayerIndex: 0,
     dice: [1, 1],
-    gameStarted: true,
+    gameStarted: false,
   };
 }
 
@@ -165,5 +165,9 @@ export function handleDisconnect(playerId: string): GameState {
       gameState.gameStarted = false;
     }
   }
+  return gameState;
+}
+
+export function getGameState(): GameState {
   return gameState;
 }

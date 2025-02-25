@@ -3,7 +3,7 @@ import http from "http";
 import { Server } from "socket.io";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
-import { buyProperty, endTurn, handleDisconnect, initGame, joinGame, rollDice, startGame } from "./game.js";
+import { buyProperty, endTurn, handleDisconnect, initGame, joinGame, rollDice, startGame, getGameState } from "./game.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -14,7 +14,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   path: "/socket.io/",
   cors: {
-    origin: "*",
+    origin: "http://localhost:5174", // Vite 개발 서버 포트
     methods: ["GET", "POST"],
     credentials: true,
   },
@@ -42,14 +42,18 @@ app.get("*", (req, res) => {
 io.on("connection", (socket) => {
   console.log("유저 접속", socket.id);
 
+  // 새로운 연결시 현재 게임 상태 전송
+  socket.emit("updateGameState", getGameState());
+
   socket.on("joinGame", (name: string) => {
     const { gameState, error } = joinGame(socket.id, name);
 
     if (error) {
-      socket.emit("gameError", error); // 이름 변경: error -> gameError
+      socket.emit("gameError", error);
       return;
     }
 
+    // 모든 클라이언트에게 업데이트된 게임 상태 전송
     io.emit("updateGameState", gameState);
   });
 
@@ -101,7 +105,7 @@ io.on("connection", (socket) => {
 
 initGame();
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 8081;
 server.listen(PORT, () => {
   console.log(`서버가 지금 ${PORT}번에서 실행 중입니다.`);
 });

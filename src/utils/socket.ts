@@ -4,14 +4,17 @@ import { GameState } from "../types";
 // 디버깅을 위한 localStorage 설정
 localStorage.debug = "socket.io-client:*";
 
-const URL = import.meta.env.VITE_SERVER_URL || window.location.origin;
+// const URL = import.meta.env.VITE_SERVER_URL || window.location.origin;
+const URL = `http://localhost:8081`; // 서버 포트와 일치하도록 수정
+
 export const socket: Socket = io(URL, {
   path: "/socket.io/",
   transports: ["polling", "websocket"],
   reconnectionAttempts: 5,
   reconnectionDelay: 1000,
   timeout: 60000,
-  forceNew: true,
+  forceNew: false,
+  autoConnect: true,
 });
 
 // 연결 이벤트에 더 자세한 로깅 추가

@@ -17,19 +17,30 @@ function App() {
 
   useEffect(() => {
     // 소켓 연결 및 이벤트
-    socket.connect();
-    // 구독
-    const connectTimeout = setTimeout(() => {
-      if (!isConnected) {
-        setError("서버 연결 시간이 초과됨");
-      }
-    }, 5000);
-    const unsubConnect = onConnect(() => {
+    if (!socket.connected) {
+      socket.connect();
+    }
+
+    let connectTimeoutId: NodeJS.Timeout;
+
+    const handleConnect = () => {
       console.log("서버에 연결 됨");
       setIsConnected(true);
-      // 소켓 연결 시 ID 저장
       setPlayerId(socket.id || "");
-    });
+      if (connectTimeoutId) {
+        clearTimeout(connectTimeoutId);
+      }
+    };
+
+    // 연결 타임아웃 설정
+    connectTimeoutId = setTimeout(() => {
+      if (!isConnected) {
+        setError("서버 연결 시간이 초과됨");
+        socket.disconnect();
+      }
+    }, 5000);
+
+    const unsubConnect = onConnect(handleConnect);
 
     const unsubDisconnect = onDisconnect(() => {
       console.log("서버와 연결끊김:");
@@ -51,7 +62,9 @@ function App() {
 
     // 컴포넌트 언마운트 시 이벤트 구독 해제
     return () => {
-      clearTimeout(connectTimeout);
+      if (connectTimeoutId) {
+        clearTimeout(connectTimeoutId);
+      }
       unsubConnect();
       unsubDisconnect();
       unsubUpdateGameState();
