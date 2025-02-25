@@ -1,0 +1,120 @@
+/* src/App.css */
+.app-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.app-title {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.connection-status {
+  text-align: center;
+  padding: 10px;
+  background-color: #f8f9fa;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.error-message {
+  padding: 10px;
+  background-color: #f8d7da;
+  color: #721c24;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (min-width: 992px) {
+  .game-container {
+    flex-direction: row;
+  }
+
+  .game-board-container {
+    flex: 2;
+  }
+
+  .game-controls-container {
+    flex: 1;
+  }
+}
+
+/* 로비 스타일 */
+.lobby {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.lobby-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.join-form {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.name-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+}
+
+.join-button,
+.start-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.join-button {
+  background-color: #4285f4;
+  color: white;
+}
+
+.start-button {
+  background-color: #34a853;
+  color: white;
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.player-list {
+  margin-top: 20px;
+}
+
+.player-list h3 {
+  margin-bottom: 10px;
+}
+
+.player-list-item {
+  padding: 8px;
+  border-bottom: 1px solid #ced4da;
+}
+
+.waiting-message {
+  margin-top: 10px;
+  text-align: center;
+  color: #6c757d;
+}
+
+/* 게임 보드 스타일은 별도 파일로 분리 */
